@@ -1,0 +1,58 @@
+package trade;
+
+message ErrorResponse
+{
+    required bytes ErrorTime          = 1;
+    required int32 ErrorCode          = 2;
+    required bytes ErrorDesc          = 3;
+    required bytes Detail             = 4;
+    required bytes ErrorInfo          = 5;
+    required bytes File               = 6;
+    required bytes Function           = 7;
+    required int32 Line               = 8;
+}
+
+message ErrorInfo
+{
+    required int32 ErrorID              = 1;
+    optional bytes ErrorMsg             = 2;
+    optional bytes Detail               = 3;
+}
+
+message CommonRequest
+{
+	required int32 ReqID          		= 1;
+	optional int32 UserID               = 2;
+}
+
+
+message CommonResponse
+{
+    required int32 ReqID                = 1;
+    required int32 TotalNumRsp          = 2;  //Sometimes contains wrong value. Recommand 'IsLast' field first please.
+    required bool IsLast                = 3;
+    required bool IsSuccess             = 4;
+    optional ErrorInfo ErrorInfo        = 5;
+}
+
+
+message ReqLogin
+{
+    required bytes UserCode            = 1;
+    required bytes Password            = 2;
+}
+
+message LoginStatus
+{
+    required bytes UserCode            = 1;
+    optional int32 UserID              = 2;   // added on 2013-11-06 by fuyf
+    required int32 Status              = 3;   //0 means login failed, 1 means login succeed
+    optional int32 FrontID             = 4;
+    optional int32 SessionID           = 5;
+    optional int32 MaxOrderRef         = 6;
+    optional bytes Reason              = 7;
+    optional bytes Warning             = 8;
+}
+
+
+

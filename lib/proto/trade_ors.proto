@@ -1,0 +1,829 @@
+package trade;
+
+import public "common.proto";
+
+///////////////////////////////////////////////////
+/// ORS and TradeGateway use the same message type
+///////////////////////////////////////////////////
+
+message Instrument
+{
+    required bytes InstrumentCode        = 1;   // => InstrumentID in CTP
+    optional bytes ExchangeID          = 2;
+    optional bytes InstrumentName       = 3;
+    optional bytes ExchangeInstID      = 4;
+    optional bytes ProductID           = 5;
+    optional bytes ProductClass        = 6;
+    optional int32 DeliveryYear         = 7;
+    optional int32 DeliveryMonth        = 8;
+    optional int32 MaxMarketOrderVolume = 9;
+    optional int32 MinMarketOrderVolume = 10;
+    optional int32 MaxLimitOrderVolume  = 11;
+    optional int32 MinLimitOrderVolume  = 12;
+    optional int32 VolumeMultiple       = 13;
+    optional double PriceTick           = 14;
+    optional bytes CreateDate          = 15;
+    optional bytes OpenDate            = 16;
+    optional bytes ExpireDate          = 17;
+    optional bytes StartDelivDate      = 18;
+    optional bytes EndDelivDate        = 19;
+    optional bytes InstLifePhase       = 20;
+    optional int32 IsTrading            = 21;
+    optional bytes PositionType        = 22;
+    optional bytes PositionDateType    = 23;
+    optional double LongMarginRatio     = 24;
+    optional double ShortMarginRatio    = 25;
+}
+
+message DepthMarketData
+{
+    optional bytes TradingDay          = 1;
+    optional bytes InstrumentCode        = 2;
+    optional bytes ExchangeID          = 3;
+    optional bytes ExchangeInstID      = 4;
+    optional double LastPrice           = 5;
+    optional double PreSettlementPrice  = 6;
+    optional double PreClosePrice       = 7;
+    optional double PreOpenInterest     = 8;
+    optional double OpenPrice           = 9;
+    optional double HighestPrice        = 10;
+    optional double LowestPrice         = 11;
+    optional int32 Volume               = 12;
+    optional double Turnover            = 13;
+    optional double OpenInterest        = 14;
+    optional double ClosePrice          = 15;
+    optional double SettlementPrice     = 16;
+    optional double UpperLimitPrice     = 17;
+    optional double LowerLimitPrice     = 18;
+    optional double PreDelta            = 19;
+    optional double CurrDelta           = 20;
+    optional bytes UpdateTime          = 21;
+    optional int32 UpdateMillisec       = 22;
+    optional double BidPrice1           = 23;
+    optional int32 BidVolume1           = 24;
+    optional double AskPrice1           = 25;
+    optional int32 AskVolume1           = 26;
+    optional double BidPrice2           = 27;
+    optional int32 BidVolume2           = 28;
+    optional double AskPrice2           = 29;
+    optional int32 AskVolume2           = 30;
+    optional double BidPrice3           = 31;
+    optional int32 BidVolume3           = 32;
+    optional double AskPrice3           = 33;
+    optional int32 AskVolume3           = 34;
+    optional double BidPrice4           = 35;
+    optional int32 BidVolume4           = 36;
+    optional double AskPrice4           = 37;
+    optional int32 AskVolume4           = 38;
+    optional double BidPrice5           = 39;
+    optional int32 BidVolume5           = 40;
+    optional double AskPrice5           = 41;
+    optional int32 AskVolume5           = 42;
+    optional double AveragePrice        = 43;
+    optional double ArbBidPrice           = 44;
+    optional int32 ArbBidVolume           = 45;
+    optional double ArbAskPrice           = 46;
+    optional int32 ArbAskVolume           = 47;
+}
+
+
+
+// Order/Trade related messages
+message InputOrder
+{
+    optional bytes BrokerCode            = 2;   // => BrokerID in CTP
+    optional bytes InvestorID           = 3;
+    optional bytes InstrumentCode        = 4;   // => InstrumentID in CTP
+    optional bytes OrderRef            = 5;
+    optional bytes UserCode               = 6;  // => Replace UserID in CTP, UserCode saves the user who insert the order
+    optional bytes OrderPriceType      = 7;
+    optional bytes Direction           = 8;
+    optional bytes CombOffsetFlag      = 9;
+    optional bytes CombHedgeFlag       = 10;
+    optional double LimitPrice          = 11;
+    optional int32 VolumeTotalOriginal  = 12;
+    optional bytes TimeCondition       = 13;
+    optional bytes GTDDate             = 14;
+    optional bytes VolumeCondition     = 15;
+    optional int32 MinVolume            = 16;
+    optional bytes ContingentCondition = 17;
+    optional double StopPrice           = 18;
+    optional bytes ForceCloseReason    = 19;
+    optional int32 IsAutoSuspend        = 20;
+    optional bytes BusinessUnit        = 21;
+    optional int32 RequestID            = 22;
+    optional int32 UserForceClose       = 23;
+    optional int32 IsSwapOrder          = 24;
+}
+
+message Order
+{
+    optional bytes BrokerCode            = 1;   // => BrokerID in CTP
+    optional bytes InvestorID          = 2;
+    optional bytes InstrumentCode        = 3;   // => InstrumentID in CTP
+    optional bytes OrderRef            = 4;
+    optional bytes UserCode              = 5;   // => Replace UserID in CTP, UserCode saves the user who insert the order
+    optional bytes OrderPriceType      = 6;
+    optional bytes Direction           = 7;
+    optional bytes CombOffsetFlag      = 8;
+    optional bytes CombHedgeFlag       = 9;
+    optional double LimitPrice          = 10;
+    optional int32 VolumeTotalOriginal  = 11;
+    optional bytes TimeCondition       = 12;
+    optional bytes GTDDate             = 13;
+    optional bytes VolumeCondition     = 14;
+    optional int32 MinVolume            = 15;
+    optional bytes ContingentCondition = 16;
+    optional double StopPrice           = 17;
+    optional bytes ForceCloseReason    = 18;
+    optional int32 IsAutoSuspend        = 19;
+    optional bytes BusinessUnit        = 20;
+    optional int32 RequestID            = 21;
+    optional bytes OrderLocalID        = 22;
+    optional bytes ExchangeID          = 23;
+    optional bytes ParticipantID       = 24;
+    optional bytes ClientID            = 25;
+    optional bytes ExchangeInstID      = 26;
+    optional bytes TraderID            = 27;
+    optional int32 InstallID            = 28;
+    optional bytes OrderSubmitStatus   = 29;
+    optional int32 NotifySequence       = 30;
+    optional bytes TradingDay          = 31;
+    optional int32 SettlementID         = 32;
+    optional bytes OrderSysID          = 33;
+    optional bytes OrderSource         = 34;
+    optional bytes OrderStatus         = 35;
+    optional bytes OrderType           = 36;
+    optional int32 VolumeTraded         = 37;
+    optional int32 VolumeTotal          = 38;
+    optional bytes InsertDate          = 39;
+    optional bytes InsertTime          = 40;
+    optional bytes ActiveTime          = 41;
+    optional bytes SuspendTime         = 42;
+    optional bytes UpdateTime          = 43;
+    optional bytes CancelTime          = 44;
+    optional bytes ActiveTraderID      = 45;
+    optional bytes ClearingPartID      = 46;
+    optional int32 SequenceNo           = 47;
+    optional int32 FrontID              = 48;
+    optional int32 SessionID            = 49;
+    optional bytes UserProductInfo     = 50;
+    optional bytes StatusMsg           = 51;
+    optional int32 UserForceClose       = 52;
+    optional bytes ActiveUserID        = 53;
+    optional int32 BrokerOrderSeq       = 54;
+    optional bytes RelativeOrderSysID  = 55;
+    optional int32 ZCETotalTradedVolume = 56;
+    optional int32 IsSwapOrder          = 57;
+    optional bytes State                = 58;
+    optional bytes CancelState          = 59;
+}
+
+message InputOrderAction
+{
+    required bytes BrokerCode            = 1;   // => BrokerID in CTP
+    required bytes InvestorID          = 2;
+    required int32 OrderActionRef       = 3;
+    required bytes OrderRef            = 4;
+    optional int32 RequestID            = 5;
+    optional int32 FrontID              = 6;
+    optional int32 SessionID            = 7;
+    optional bytes ExchangeID          = 8;
+    optional bytes OrderSysID          = 9;
+    optional bytes ActionFlag          = 10;
+    optional double LimitPrice          = 11;
+    optional int32 VolumeChange         = 12;
+    optional bytes UserCode            = 13;    // => Replace UserID in CTP, UserCode saves the user who operate the order
+    optional bytes InstrumentCode        = 14;  // => InstrumentID in CTP
+}
+
+message OrderAction
+{
+    required bytes BrokerCode            = 1;   // => BrokerID in CTP
+    required bytes InvestorID          = 2;
+    required int32 OrderActionRef       = 3;
+    required bytes OrderRef            = 4;
+    optional int32 RequestID            = 5;
+    optional int32 FrontID              = 6;
+    optional int32 SessionID            = 7;
+    optional bytes ExchangeID          = 8;
+    optional bytes OrderSysID          = 9;
+    optional bytes ActionFlag          = 10;
+    optional double LimitPrice          = 11;
+    optional int32 VolumeChange         = 12;
+    optional bytes ActionDate          = 13;
+    optional bytes ActionTime          = 14;
+    optional bytes TraderID            = 15;
+    optional int32 InstallID            = 16;
+    optional bytes OrderLocalID        = 17;
+    optional bytes ActionLocalID       = 18;
+    optional bytes ParticipantID       = 19;
+    optional bytes ClientID            = 20;
+    optional bytes BusinessUnit        = 21;
+    optional bytes OrderActionStatus   = 22;
+    optional bytes UserCode            = 23;    // => Replace UserID in CTP, UserCode saves the user who operate the order
+    optional bytes StatusMsg           = 24;
+    optional bytes InstrumentCode        = 25;  // => InstrumentID in CTP
+}
+
+message Trade
+{
+    optional bytes BrokerCode            = 1;   // => BrokerID in CTP
+    optional bytes InvestorID          = 2;
+    optional bytes InstrumentCode        = 3;   // => InstrumentID in CTP
+    optional bytes OrderRef            = 4;
+    optional bytes UserCode              = 5;   // => Replace UserID in CTP, UserCode saves the user who operate the order
+    optional bytes ExchangeID          = 6;
+    optional bytes TradeID             = 7;
+    optional bytes Direction           = 8;
+    optional bytes OrderSysID          = 9;
+    optional bytes ParticipantID       = 10;
+    optional bytes ClientID            = 11;
+    optional bytes TradingRole         = 12;
+    optional bytes ExchangeInstID      = 13;
+    optional bytes OffsetFlag          = 14;
+    optional bytes HedgeFlag           = 15;
+    optional double Price               = 16;
+    optional int32 Volume               = 17;
+    optional bytes TradeDate           = 18;
+    optional bytes TradeTime           = 19;
+    optional bytes TradeType           = 20;
+    optional bytes PriceSource         = 21;
+    optional bytes TraderID            = 22;
+    optional bytes OrderLocalID        = 23;
+    optional bytes ClearingPartID      = 24;
+    optional bytes BusinessUnit        = 25;
+    optional int32 SequenceNo           = 26;
+    optional bytes TradingDay          = 27;
+    optional int32 SettlementID         = 28;
+    optional int32 BrokerOrderSeq       = 29;
+    optional bytes TradeSource         = 30;
+}
+
+message InvestorPosition
+{
+    optional bytes InstrumentCode        = 1;   // => InstrumentID in CTP
+    optional bytes BrokerCode            = 2;   // => BrokerID in CTP
+    optional bytes InvestorID          = 3;
+    optional bytes PosiDirection       = 4;
+    optional bytes HedgeFlag           = 5;
+    optional bytes PositionDate        = 6;
+    optional int32 YdPosition           = 7;
+    optional int32 Position             = 8;
+    optional int32 LongFrozen           = 9;
+    optional int32 ShortFrozen          = 10;
+    optional double LongFrozenAmount    = 11;
+    optional double ShortFrozenAmount   = 12;
+    optional int32 OpenVolume           = 13;
+    optional int32 CloseVolume          = 14;
+    optional double OpenAmount          = 15;
+    optional double CloseAmount         = 16;
+    optional double PositionCost        = 17;
+    optional double PreMargin           = 18;
+    optional double UseMargin           = 19;
+    optional double FrozenMargin        = 20;
+    optional double FrozenCash          = 21;
+    optional double FrozenCommission    = 22;
+    optional double CashIn              = 23;
+    optional double Commission          = 24;
+    optional double CloseProfit         = 25;
+    optional double PositionProfit      = 26;
+    optional double PreSettlementPrice  = 27;
+    optional double SettlementPrice     = 28;
+    optional bytes TradingDay          = 29;
+    optional int32 SettlementID         = 30;
+    optional double OpenCost            = 31;
+    optional double ExchangeMargin      = 32;
+    optional int32 CombPosition         = 33;
+    optional int32 CombLongFrozen       = 34;
+    optional int32 CombShortFrozen      = 35;
+    optional double CloseProfitByDate   = 36;
+    optional double CloseProfitByTrade  = 37;
+    optional int32 TodayPosition        = 38;
+    optional double MarginRateByMoney   = 39;
+    optional double MarginRateByVolume  = 40;
+    optional double CommissionOpenRateByMoney   = 41;
+    optional double CommissionOpenRateByVolume  = 42;
+    optional double CommissionCloseRateByMoney   = 43;
+    optional double CommissionCloseRateByVolume  = 44;
+    optional double CommissionCloseTodayRateByMoney   = 45;
+    optional double CommissionCloseTodayRateByVolume  = 46;
+    optional int32 VolumeMultiple       = 47;
+    optional bytes ExchangeID           = 48;
+    optional int32 ClosableNum          = 49;
+    optional double AvgPositionPrice    = 50;
+    optional int32 UnChangedYdPosition  = 51;
+}
+
+message TradingAccount
+{
+    optional bytes BrokerCode            = 1;   // => BrokerID in CTP
+    optional bytes InvestorID           = 2;
+    optional double PreMortgage         = 3;
+    optional double PreCredit           = 4;
+    optional double PreDeposit          = 5;
+    optional double PreBalance          = 6;
+    optional double PreMargin           = 7;
+    optional double InterestBase        = 8;
+    optional double Interest            = 9;
+    optional double Deposit             = 10;
+    optional double Withdraw            = 11;
+    optional double FrozenMargin        = 12;
+    optional double FrozenCash          = 13;
+    optional double FrozenCommission    = 14;
+    optional double CurrMargin          = 15;
+    optional double CashIn              = 16;
+    optional double Commission          = 17;
+    optional double CloseProfit         = 18;
+    optional double PositionProfit      = 19;
+    optional double Balance             = 20;
+    optional double Available           = 21;
+    optional double WithdrawQuota       = 22;
+    optional double Reserve             = 23;
+    optional bytes TradingDay          = 24;
+    optional int32 SettlementID         = 25;
+    optional double Credit              = 26;
+    optional double Mortgage            = 27;
+    optional double ExchangeMargin      = 28;
+    optional double DeliveryMargin      = 29;
+    optional double ExchangeDeliveryMargin  = 30;
+}
+
+message InvestorPositionDetail
+{
+    optional bytes InstrumentCode        = 1;
+    optional bytes BrokerCode            = 2;
+    optional bytes InvestorID          = 3;
+    optional bytes HedgeFlag           = 4;
+    optional bytes Direction           = 5;
+    optional bytes OpenDate            = 6;
+    optional bytes TradeID             = 7;
+    optional int32 Volume               = 8;
+    optional double OpenPrice           = 9;
+    optional bytes TradingDay          = 10;
+    optional int32 SettlementID         = 11;
+    optional bytes TradeType           = 12;
+    optional bytes CombInstrumentID    = 13;
+    optional bytes ExchangeID          = 14;
+    optional double CloseProfitByDate   = 15;
+    optional double CloseProfitByTrade  = 16;
+    optional double PositionProfitByDate    = 17;
+    optional double PositionProfitByTrade   = 18;
+    optional double Margin              = 19;
+    optional double ExchMargin          = 20;
+    optional double MarginRateByMoney   = 21;
+    optional double MarginRateByVolume  = 22;
+    optional double LastSettlementPrice = 23;
+    optional double SettlementPrice     = 24;
+    optional int32 CloseVolume          = 25;
+    optional double CloseAmount         = 26;
+}
+
+message InstrumentMarginRate
+{
+    required bytes InstrumentCode        = 1;
+    optional bytes InvestorRange       = 2;
+    required bytes BrokerCode            = 3;
+    optional bytes InvestorID          = 4;
+    optional bytes HedgeFlag           = 5;
+    optional double LongMarginRatioByMoney   = 6;
+    optional double LongMarginRatioByVolume  = 7;
+    optional double ShortMarginRatioByMoney  = 8;
+    optional double ShortMarginRatioByVolume = 9;
+    optional int32 IsRelative           = 10;
+}
+
+message InstrumentCommissionRate
+{
+    required bytes InstrumentCode        = 1;
+    optional bytes InvestorRange       = 2;
+    required bytes BrokerCode            = 3;
+    optional bytes InvestorID          = 4;
+    optional double OpenRatioByMoney    = 5;
+    optional double OpenRatioByVolume   = 6;
+    optional double CloseRatioByMoney   = 7;
+    optional double CloseRatioByVolume  = 8;
+    optional double CloseTodayRatioByMoney  = 9;
+    optional double CloseTodayRatioByVolume = 10;
+}
+
+
+// Load/Stop Environment
+message ReqLoadEnv
+{
+    required CommonRequest CReq             = 1;
+    required string TradeEnvName            = 2;
+}
+
+message RspLoadEnv
+{
+    required CommonResponse CRsp          = 1;
+}
+
+message ReqStopEnv
+{
+    required CommonRequest CReq             = 1;
+}
+
+message RspStopEnv
+{
+    required CommonResponse CRsp          = 1;
+}
+
+// Order Insert related
+message ReqOrderInsert
+{
+    required CommonRequest CReq                = 1;
+    required InputOrder InputOrderItem  = 2;
+}
+
+message ReqOrderInsertFromFrontEnd
+{
+    required CommonRequest CReq         = 1;
+    required InputOrder InputOrderItem  = 2;
+    required int32 FrontID              = 3;
+    required int32 SessionID            = 4;
+}
+
+message RspOrderInsert
+{
+    required CommonResponse CRsp          = 1;
+    required InputOrder InputOrderItem  = 2;
+}
+
+message ErrRtnOrderInsertOnExch
+{
+    required ErrorInfo ErrorInfoItem    = 1;
+    required InputOrder InputOrderItem  = 2;
+}
+
+message RtnOrder
+{
+    required Order OrderItem            = 1;
+}
+
+// Order Action related
+message ReqOrderAction
+{
+    required CommonRequest CReq                = 1;
+    required InputOrderAction InputOrderActionItem  = 2;
+}
+
+message RspOrderAction
+{
+    required CommonResponse CRsp          = 1;
+    required InputOrderAction InputOrderActionItem  = 2;
+}
+
+message ErrRtnOrderActionOnExch
+{
+    required ErrorInfo ErrorInfoItem    = 1;
+    required OrderAction OrderActionItem  = 2;
+}
+
+// Trade related
+message RtnTrade
+{
+    required Trade TradeItem            = 1;
+}
+
+
+//Query Order/Trade/Position/Trading Account
+message QryOrder
+{
+    required bytes BrokerCode            = 2;   // => BrokerID in CTP
+    required bytes InvestorID          = 3;
+    optional bytes InstrumentCode        = 4;   // => InstrumentID in CTP
+    optional bytes ExchangeID          = 5;
+    optional bytes OrderSysID          = 6;
+    optional bytes InsertTimeStart     = 7;
+    optional bytes InsertTimeEnd       = 8;
+}
+message ReqQryOrder
+{
+    required CommonRequest CReq                = 1;
+    required QryOrder QryOrderItem      = 2;
+}
+message RspQryOrder
+{
+    required CommonResponse CRsp          = 1;
+    required Order OrderItem            = 2;
+}
+
+message QryTrade
+{
+    required bytes BrokerCode            = 2;   // => BrokerID in CTP
+    required bytes InvestorID          = 3;
+    optional bytes InstrumentCode        = 4;   // => InstrumentID in CTP
+    optional bytes ExchangeID          = 5;
+    optional bytes TradeID             = 6;
+    optional bytes TradeTimeStart      = 7;
+    optional bytes TradeTimeEnd        = 8;
+}
+message ReqQryTrade
+{
+    required CommonRequest CReq                = 1;
+    required QryTrade QryTradeItem      = 2;
+}
+message RspQryTrade
+{
+    required CommonResponse CRsp          = 1;
+    required Trade TradeItem            = 2;
+}
+
+message QryInvestorPosition
+{
+    required bytes BrokerCode            = 1;   // => BrokerID in CTP
+    required bytes InvestorID          = 2;
+    optional bytes InstrumentCode        = 3;   // => InstrumentID in CTP
+}
+message ReqQryInvestorPosition
+{
+    required CommonRequest CReq                = 1;
+    required QryInvestorPosition QryInvestorPositionItem      = 2;
+}
+message RspQryInvestorPosition
+{
+    required CommonResponse CRsp          = 1;
+    required InvestorPosition InvestorPositionItem            = 2;
+}
+
+message QryTradingAccount
+{
+    required bytes BrokerCode            = 1;   // => BrokerID in CTP
+    required bytes InvestorID          = 2;
+}
+message ReqQryTradingAccount
+{
+    required CommonRequest CReq                = 1;
+    required QryTradingAccount QryTradingAccountItem      = 2;
+}
+message RspQryTradingAccount
+{
+    required CommonResponse CRsp          = 1;
+    required TradingAccount TradingAccountItem            = 2;
+}
+
+message QryInvestorPositionDetail
+{
+    required bytes BrokerCode            = 1;   // => BrokerID in CTP
+    required bytes InvestorID          = 2;
+    optional bytes InstrumentCode        = 3;   // => InstrumentID in CTP
+}
+message ReqQryInvestorPositionDetail
+{
+    required CommonRequest CReq                = 1;
+    required QryInvestorPositionDetail QryInvestorPositionDetailItem      = 2;
+}
+message RspQryInvestorPositionDetail
+{
+    required CommonResponse CRsp          = 1;
+    required InvestorPositionDetail InvestorPositionDetailItem            = 2;
+}
+
+message QryInstrumentMarginRate
+{
+    required bytes BrokerCode            = 1;   // => BrokerID in CTP
+    required bytes InvestorID          = 2;
+    optional bytes InstrumentCode        = 3;   // => InstrumentID in CTP
+    optional bytes HedgeFlag            = 4;
+}
+message ReqQryInstrumentMarginRate
+{
+    required CommonRequest CReq                = 1;
+    required QryInstrumentMarginRate QryInstrumentMarginRateItem      = 2;
+}
+message RspQryInstrumentMarginRate
+{
+    required CommonResponse CRsp          = 1;
+    required InstrumentMarginRate InstrumentMarginRateItem            = 2;
+}
+
+message QryInstrumentCommissionRate
+{
+    required bytes BrokerCode            = 1;   // => BrokerID in CTP
+    required bytes InvestorID          = 2;
+    optional bytes InstrumentCode        = 3;   // => InstrumentID in CTP
+}
+message ReqQryInstrumentCommissionRate
+{
+    required CommonRequest CReq                = 1;
+    required QryInstrumentCommissionRate QryInstrumentCommissionRateItem      = 2;
+}
+message RspQryInstrumentCommissionRate
+{
+    required CommonResponse CRsp          = 1;
+    required InstrumentCommissionRate InstrumentCommissionRateItem            = 2;
+}
+
+message QryInstrument
+{
+    required bytes InstrumentCode      = 2;  // => InstrumentID in CTP
+    optional bytes ExchangeID          = 3;
+    optional bytes ExchangeInstID      = 4;
+    optional bytes ProductID           = 5;
+}
+message ReqQryInstrument
+{
+    required CommonRequest CReq                = 1;
+    required QryInstrument QryInstrumentItem     = 2;
+}
+message RspQryInstrument
+{
+    required CommonResponse CRsp          = 1;
+    required Instrument InstrumentItem  = 2;
+}
+
+
+message QryInstrumentFromTG
+{
+    required bytes InstrumentCode      = 2;  // => InstrumentID in CTP
+    optional bytes ExchangeID          = 3;
+    optional bytes ExchangeInstID      = 4;
+    optional bytes ProductID           = 5;
+    optional bytes BrokerCode          = 6;
+    optional bytes InvestorID          = 7;
+}
+message ReqQryInstrumentFromTG
+{
+    required CommonRequest CReq                = 1;
+    required QryInstrumentFromTG QryInstrumentFromTGItem     = 2;
+}
+message RspQryInstrumentFromTG
+{
+    required CommonResponse CRsp          = 1;
+    required Instrument InstrumentItem  = 2;
+}
+
+
+message ReqRCValidateOrderInsert
+{
+    required CommonRequest CReq                 = 1;
+    required int32 FrontID                      = 2;
+    required int32 SessionID                    = 3;
+    required ReqOrderInsert ReqOrderInsertItem  = 4;
+}
+message RspRCValidateOrderInsert
+{
+    required CommonResponse CRsp                = 1;
+    required int32 FrontID                      = 2;
+    required int32 SessionID                    = 3;
+    required ReqOrderInsert ReqOrderInsertItem  = 4;
+}
+
+
+
+message OrderInsertDB
+{
+    required int32 AccountInputOrderID      = 1;
+    required int32 FrontID                  = 2;
+    required int32 SessionID                = 3;
+    required ReqOrderInsert ReqOrderInsertItem      = 4;
+    required bool IsSuccess                 = 5;
+    optional ErrorInfo ErrorInfo            = 6;
+}
+
+message OrderActionDB
+{
+    required int32 AccountInputOrderActionID                 = 1;
+    required ReqOrderAction ReqOrderActionItem      = 2;
+    required bool IsSuccess                 = 3;
+    optional ErrorInfo ErrorInfo            = 4;
+    required bool IsFailedOnExch            = 5;
+    optional OrderAction OrderActionItem    = 6;
+}
+
+message OrderDB
+{
+    required int32 AccountOrderID     = 1;
+    required Order OrderItem          = 2;
+}
+
+message TradeDB
+{
+    required int32 AccountTradeID     = 1;
+    required Trade TradeItem          = 2;
+}
+
+message PositionDB
+{
+    required int32 PositionID         = 1;
+    required InvestorPosition PositionItem  = 2;
+}
+
+message TradingAccountDB
+{
+    required int32 TradingAccountID     = 1;
+    required TradingAccount TradingAccountItem  = 2;
+}
+
+message RtnTradingConnectionStatus
+{
+    required string SubAccountCode    = 1;
+    required int32 Status             = 2;    // 0:disconnected  1:connected
+}
+
+message RtnTGTradingConnectionStatus
+{
+    required string BrokerCode        = 1;
+    required string InvestorID        = 2;
+    required int32 Status             = 3;    // 0:disconnected  1:connected
+}
+message ReqQryTradingConnectionStatus
+{
+    required CommonRequest CReq         = 1;
+}
+message RspQryTradingConnectionStatus
+{
+    required CommonResponse CRsp        = 1;
+    required string BrokerCode          = 2;
+    required string InvestorID          = 3;
+    required int32 Status               = 4;    // 0:disconnected  1:connected
+}
+
+
+// TD provider change
+message ReqNotifyTDProviderChange
+{
+    required CommonRequest CReq             = 1;
+    required int32 TDProviderID             = 2;
+}
+
+// Connect Account
+message ReqConnectAccount
+{
+    required CommonRequest CReq             = 1;
+    required int32 AccountID                = 2;
+}
+message RspConnectAccount
+{
+    required CommonResponse CRsp            = 1;
+    required int32 AccountID                = 2;
+    required int32 Status                   = 3;  // 0: disconnected  1: connected
+}
+
+// Disconnect Account
+message ReqDisconnectAccount
+{
+    required CommonRequest CReq             = 1;
+    required int32 AccountID                = 2;
+}
+message RspDisconnectAccount
+{
+    required CommonResponse CRsp            = 1;
+    required int32 AccountID                = 2;
+    required int32 Status                   = 3;  // 0: disconnected  1: connected
+}
+
+message ReqQryTDProviderStatus
+{
+    required CommonRequest CReq             = 1;
+    required int32 TDProviderID             = 2;
+}
+message RspQryTDProviderStatus
+{
+    required CommonResponse CRsp            = 1;
+    required int32 TDProviderID             = 2;
+    required int32 Status                   = 3;    // 0:disconnected  1:connected
+}
+
+message ReqQryAccountStatus
+{
+    required CommonRequest CReq             = 1;
+    required int32 AccountID                = 2;
+}
+message RspQryAccountStatus
+{
+    required CommonResponse CRsp            = 1;
+    required int32 AccountID                = 2;
+    required int32 Status                   = 3;    // 0:disconnected  1:connected
+}
+
+message InstrumentStatus
+{
+    required string ExchangeID              = 1;
+    required string ExchangeInstID          = 2;
+    required string SettlementGroupID       = 3;
+    required string InstrumentID            = 4;
+    required string InstrumentStatus        = 5;
+    required int32 TradingSegmentSN         = 6;
+    required string EnterTime               = 7;
+    required string EnterReason             = 8;
+}
+message RtnInstrumentStatus
+{
+    required InstrumentStatus InstrumentStatusItem      = 1;
+}
+
+message ReqQryDepthMarketData
+{
+    required CommonRequest CReq             = 1;
+    required string BrokerID                = 2;
+    required string InvestorID              = 3;
+    required string InstrumentID            = 4;
+}
+message RspQryDepthMarketData
+{
+    required CommonResponse CRsp            = 1;
+    required DepthMarketData DepthMarketDataItem            = 2;
+}

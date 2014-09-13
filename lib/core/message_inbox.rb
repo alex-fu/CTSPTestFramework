@@ -1,0 +1,2 @@
+class MessageInbox
+end
